@@ -50,7 +50,18 @@
         tennisGame.Player1 = matchFormModel.Player1;
         tennisGame.Player2 = matchFormModel.Player2;
         tennisGame.SetsToPlay = matchFormModel.SetsInMatch;
+        tennisGame.HasWinner = false;
+
+        var servingPlayer = GetServer();
+        servingPlayer.IsServing = true;
 
         nav.NavigateTo("/match");
+    }
+
+    public Player GetServer(){
+        Random rnd = new Random();
+        var cointoss = rnd.Next(1, 11);
+
+        return cointoss <= 5 ? tennisGame.Player1 : tennisGame.Player2;
     }
 }

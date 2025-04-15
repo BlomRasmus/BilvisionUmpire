@@ -6,6 +6,7 @@ namespace BilvisionUmpire.Models
     {
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
+        public string DisplayedScore { get; set; } = "Love";
         public int Score { get; set; }
         public int GameScore { get; set; }
         public int SetScore { get; set; }
