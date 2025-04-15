@@ -1,0 +1,96 @@
+﻿@page "/match"
+@using BilvisionUmpire.Models
+@using BilvisionUmpire.Services
+@inject TennisGame tennisGame
+@inject NavigationManager nav
+@rendermode InteractiveServer
+
+<link href="Styling/StartPage.css" rel="stylesheet" />
+
+
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light" id="backgroundContainer">
+    <div class="p-5 bg-white rounded shadow-lg" style="min-width: 800px; min-height:600px;">
+
+        <div class="d-flex justify-content-center align-items-center">
+            <a href="https://www.animatedimages.org/cat-tennis-172.htm"><img src="https://www.animatedimages.org/data/media/172/animated-tennis-image-0022.gif" border="0" alt="animated-tennis-image-0022"/></a>
+        </div>
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-header fw-bold bg-success text-white">
+                            @tennisGame.Player1.Name
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Points: <strong>@tennisGame.Player1.Score</strong></li>
+                            <li class="list-group-item" style="background-color: seagreen"></li>
+
+                            <li class="list-group-item">Games: <strong>@tennisGame.Player1.GameScore</strong></li>
+                            <li class="list-group-item">Sets: <strong>@tennisGame.Player1.SetScore</strong></li>
+                        </ul>
+
+                    </div>
+                    <div class="d-flex justify-content-center mt-3 gap-2">
+                        <button type="button" class="btn btn-danger px-4">Rule Out</button>
+                        <button type="button" class="btn btn-success px-4" @onclick="()=> AddPoint(PlayerSide.Player1)">Point</button>
+                    </div>
+                </div>
+
+                <div class="col-auto">
+                    <h3 class="fw-bold text-center mx-3">VS</h3>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-header fw-bold bg-primary text-white">
+                            @tennisGame.Player2.Name
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Points: <strong>@tennisGame.Player2.Score</strong></li>
+                            <li class="list-group-item bg-primary"></li>
+
+                            <li class="list-group-item">Games: <strong>@tennisGame.Player2.GameScore</strong></li>
+                            <li class="list-group-item">Sets: <strong>@tennisGame.Player2.SetScore</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-3 gap-2">
+                        <button type="button" class="btn btn-danger px-4">Rule Out</button>
+                        <button type="button" class="btn btn-success px-4" @onclick="() => AddPoint(PlayerSide.Player2)">Point</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <div class="border rounded p-4 bg-light shadow-sm">
+                <h5 class="fw-bold text-uppercase text-secondary mb-3">Umpire's Call:</h5>
+                <div class="fs-4 text-center text-dark">
+                    @UmpireCall
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+@code {
+    private string? UmpireCall { get; set; }
+
+    public void AddPoint(PlayerSide player){
+        var playerToGivePoint = player == PlayerSide.Player1 ? tennisGame.Player1 : tennisGame.Player2;
+        tennisGame.PlayerScores(playerToGivePoint);
+
+        GetUmpireCall();
+    }
+
+    public void GetUmpireCall(){
+
+        UmpireCall = tennisGame.GetScoresBasedOnServer();
+    }
+
+    public enum PlayerSide {Player1, Player2}
+}

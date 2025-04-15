@@ -1,0 +1,56 @@
+﻿@page "/"
+@using BilvisionUmpire.Models
+@using BilvisionUmpire.Services
+@inject TennisGame tennisGame
+@inject NavigationManager nav
+@rendermode InteractiveServer
+
+<link href="Styling/StartPage.css" rel="stylesheet" />
+
+<EditForm Model="matchFormModel" OnValidSubmit="StartGame">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="d-flex justify-content-center align-items-center min-vh-100 bg-light" id="backgroundContainer">
+        <div class="p-5 bg-white rounded shadow-lg" style="min-width: 400px;">
+            <h1 class="text-center mb-4">🎾 Bilvision Umpire</h1>
+
+            <div class="mb-3">
+                <label class="form-label">Player 1 Name</label>
+                <InputText class="form-control" @bind-Value="matchFormModel.Player1.Name" />
+                <ValidationMessage For="() => matchFormModel.Player1.Name" class="text-bg-danger"/>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Player 2 Name</label>
+                <InputText class="form-control" @bind-Value="matchFormModel.Player2.Name" />
+                <ValidationMessage For="() => matchFormModel.Player2.Name" class="text-bg-danger" />
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Sets to Play</label>
+                <InputSelect class="form-select" @bind-Value="matchFormModel.SetsInMatch">
+                    <option value="1">Best of 1</option>
+                    <option value="3">Best of 3</option>
+                    <option value="5">Best of 5</option>
+                </InputSelect>
+            </div>
+
+            <button class="btn btn-success w-100" type="submit">Start Match</button>
+        </div>
+    </div>
+</EditForm>
+
+
+@code {
+    [SupplyParameterFromForm]
+    private MatchFormModel matchFormModel { get; set; } = new();
+
+    public void StartGame(){
+        tennisGame.Player1 = matchFormModel.Player1;
+        tennisGame.Player2 = matchFormModel.Player2;
+        tennisGame.SetsToPlay = matchFormModel.SetsInMatch;
+
+        nav.NavigateTo("/match");
+    }
+}
