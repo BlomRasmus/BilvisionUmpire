@@ -21,7 +21,14 @@
                         <div class="card text-center">
                             <div class="card-header fw-bold bg-success text-white">
                                 @tennisGame.Player1.Name
+                                @if (tennisGame.Player1.IsServing)
+                                {
+                                    <span class="badge bg-secondary text-dark position-absolute top-0 start-100 translate-middle p-2 rounded-pill">
+                                        Server
+                                    </span>
+                                }
                             </div>
+
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item"><strong>@tennisGame.Player1.DisplayedScore</strong></li>
                                 <li class="list-group-item" style="background-color: seagreen"></li>
@@ -45,6 +52,12 @@
                         <div class="card text-center">
                             <div class="card-header fw-bold bg-primary text-white">
                                 @tennisGame.Player2.Name
+                                @if (tennisGame.Player2.IsServing)
+                                {
+                                    <span class="badge bg-secondary text-dark position-absolute top-0 start-100 translate-middle p-2 rounded-pill">
+                                        Server
+                                    </span>
+                                }
                             </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item"><strong>@tennisGame.Player2.DisplayedScore</strong></li>
